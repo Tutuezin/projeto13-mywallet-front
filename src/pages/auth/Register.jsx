@@ -13,12 +13,22 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [incorrectPassword, setIncorrectPassword] = useState(false);
 
+  const signUp = (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      setIncorrectPassword(true);
+      console.log("ta errado isso ai ");
+    } else {
+      setIncorrectPassword(false);
+    }
+  };
+
   return (
     <Container>
       <CadastreScreen>
         <img width={147} height={50} src={logo} alt="" />
 
-        <Form>
+        <Form onSubmit={signUp}>
           <input
             type="text"
             placeholder="Nome"

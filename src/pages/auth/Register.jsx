@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import UserContext from "../../contexts/UserContext";
 import { useContext } from "react";
+import { Container, Form, Input, Button } from "../../components/Global";
 
 import axios from "axios";
 
@@ -60,7 +61,7 @@ export default function Register() {
         <img width={147} height={50} src={logo} alt="" />
 
         <Form onSubmit={signUp}>
-          <input
+          <Input
             disabled={disable}
             type="text"
             placeholder="Nome"
@@ -75,7 +76,7 @@ export default function Register() {
             </p>
           )}
 
-          <input
+          <Input
             disabled={disable}
             type="email"
             placeholder="E-mail"
@@ -83,7 +84,7 @@ export default function Register() {
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          <input
+          <Input
             disabled={disable}
             type="password"
             placeholder="Senha"
@@ -97,7 +98,7 @@ export default function Register() {
             <p className="invalidForm">⛔ Senhas não coincidem!</p>
           )}
 
-          <input
+          <Input
             disabled={disable}
             type="password"
             placeholder="Confirme a senha"
@@ -105,7 +106,7 @@ export default function Register() {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
-          <button type="submit">{loader}</button>
+          <Button type="submit">{loader}</Button>
         </Form>
 
         <p className="goToLogin" onClick={() => navigate("/")}>
@@ -115,12 +116,7 @@ export default function Register() {
     </Container>
   );
 }
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
+
 const CadastreScreen = styled.div`
   margin-top: 9.5rem;
 
@@ -149,48 +145,5 @@ const CadastreScreen = styled.div`
     font-size: 1.5rem;
     font-weight: 700;
     color: #fff;
-  }
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-
-  input {
-    height: 5.8rem;
-    width: 32.6rem;
-    border-radius: 0.5rem;
-    margin-bottom: 1.3rem;
-
-    padding-left: 1rem;
-    background: #ffffff;
-    border: none;
-
-    &::placeholder {
-      color: #000000;
-      font-size: 2rem;
-      font-weight: 400;
-    }
-  }
-
-  button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    height: 4.6rem;
-    width: 32.6rem;
-
-    font-size: 2rem;
-    font-weight: 700;
-    color: #fff;
-
-    border-radius: 0.4rem;
-    border: none;
-    background-color: #a328d6;
-
-    svg {
-      height: 1rem;
-    }
   }
 `;

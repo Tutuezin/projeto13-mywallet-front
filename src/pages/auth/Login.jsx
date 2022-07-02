@@ -5,6 +5,7 @@ import UserContext from "../../contexts/UserContext";
 import { useState, useContext } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import axios from "axios";
+import { Container, Form, Input, Button } from "../../components/Global";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -54,21 +55,21 @@ export default function Login() {
           {incorrectAccount && (
             <p className="invalidForm">⛔ E-mail ou senha incorretos!</p>
           )}
-          <input
+          <Input
             disabled={disable}
             type="email"
             placeholder="E-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <input
+          <Input
             disabled={disable}
             type="password"
             placeholder="Senha"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit">{loader}</button>
+          <Button type="submit">{loader}</Button>
         </Form>
 
         <p className="goToCadastre" onClick={() => navigate("/cadastro")}>
@@ -78,13 +79,6 @@ export default function Login() {
     </Container>
   );
 }
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
 
 const LoginScreen = styled.div`
   margin-top: 15.8rem;
@@ -115,48 +109,5 @@ const LoginScreen = styled.div`
     font-size: 1.5rem;
     font-weight: 700;
     color: #ffffff;
-  }
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-
-  input {
-    width: 32.6rem;
-    height: 5.8rem;
-    border-radius: 0.5rem;
-    margin-bottom: 1.3rem;
-    font-size: 1.5rem;
-    color: #000000;
-    padding-left: 1rem;
-    background-color: #fff;
-    border: none;
-
-    &::placeholder {
-      color: #000000;
-      font-size: 2rem;
-    }
-  }
-
-  button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    height: 4.6rem;
-    width: 32.6rem;
-
-    font-size: 2rem;
-    font-weight: 700;
-    color: #fff;
-
-    border-radius: 0.4rem;
-    border: none;
-    background-color: #a328d6;
-
-    svg {
-      height: 1rem;
-    }
   }
 `;

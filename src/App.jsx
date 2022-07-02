@@ -3,7 +3,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import Home from "./pages/Home/index";
+import Home from "./pages/Home";
+import Deposit from "./pages/Home/Deposit";
+import WithDraw from "./pages/Home/WithDraw";
+
 import UserContext from "./contexts/UserContext";
 
 function App() {
@@ -21,6 +24,8 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/cadastro" element={<Register />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/deposit" element={<Deposit />} />
+            <Route path="/withdraw" element={<WithDraw />} />
           </Routes>
         </BrowserRouter>
       </UserContext.Provider>

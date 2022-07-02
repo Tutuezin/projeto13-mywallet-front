@@ -1,21 +1,24 @@
 import logout from "../../assets/imgs/logout.svg";
 import deposit from "../../assets/imgs/deposit.svg";
 import withdraw from "../../assets/imgs/withdraw.svg";
-
 import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container } from "../../components/Global";
+import { useContext } from "react";
+import UserContext from "../../contexts/UserContext";
 
 export default function Home() {
   const navigate = useNavigate();
 
   const [movements, setMovements] = useState([1]);
 
+  // const capitalizedName = name[0].toUpperCase() + name.slice(1);
+
   return (
     <Container>
       <Header>
-        <h2>Olá, Fulano</h2>
+        <h2>Olá, Fulano </h2>
         <img width={23} height={24} src={logout} alt="" />
       </Header>
 

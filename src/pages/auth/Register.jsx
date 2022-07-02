@@ -3,16 +3,14 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/imgs/MyWalletLogo.svg";
 import { useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
-import UserContext from "../../contexts/UserContext";
-import { useContext } from "react";
 import { Container, Form, Input, Button } from "../../components/Global";
 
 import axios from "axios";
 
 export default function Register() {
   const navigate = useNavigate();
-  const { name, setName } = useContext(UserContext);
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -33,6 +31,7 @@ export default function Register() {
         email,
         password,
       };
+
       const promise = axios.post("http://localhost:5000/sign-up", body);
 
       promise
@@ -82,6 +81,7 @@ export default function Register() {
             placeholder="E-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
 
           <Input
@@ -92,6 +92,7 @@ export default function Register() {
             onChange={(e) => {
               setPassword(e.target.value);
             }}
+            required
           />
 
           {incorrectPassword && (
@@ -104,6 +105,7 @@ export default function Register() {
             placeholder="Confirme a senha"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            required
           />
 
           <Button type="submit">{loader}</Button>

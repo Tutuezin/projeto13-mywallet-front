@@ -34,7 +34,6 @@ export default function Login() {
       })
       .catch((err) => {
         console.log(err.response.data);
-
         setLoader(<ThreeDots color="white" />);
         setDisable(true);
         setTimeout(() => setDisable(false), 500);

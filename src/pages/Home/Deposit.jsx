@@ -9,7 +9,7 @@ export default function Deposit() {
   const [disable, setDisable] = useState(false);
   const [loader, setLoader] = useState("Salvar entrada");
 
-  const saveDeposit = (e) => {
+  const makeTransaction = (e) => {
     e.preventDefault();
     console.log("oi");
   };
@@ -18,7 +18,7 @@ export default function Deposit() {
       <Header>
         <h2>Nova entrada</h2>
       </Header>
-      <Form onSubmit={saveDeposit}>
+      <Form onSubmit={makeTransaction}>
         <Input
           disabled={disable}
           type="number"

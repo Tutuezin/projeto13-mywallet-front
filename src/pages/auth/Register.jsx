@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/imgs/MyWalletLogo.svg";
 import { useState } from "react";
+import { ThreeDots } from "react-loader-spinner";
+
 import axios from "axios";
 
 export default function Register() {
@@ -12,14 +14,41 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [incorrectPassword, setIncorrectPassword] = useState(false);
+  const [invalidEmail, setInvalidEmail] = useState(false);
+  const [loader, setLoader] = useState("Cadastrar");
+
+  const [disable, setDisable] = useState(false);
 
   const signUp = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setIncorrectPassword(true);
-      console.log("ta errado isso ai ");
     } else {
       setIncorrectPassword(false);
+      const body = {
+        name,
+        email,
+        password,
+      };
+      const promise = axios.post("http://localhost:5000/sign-up", body);
+
+      promise
+        .then((res) => {
+          console.log(res.data);
+          setDisable(true);
+          setLoader(<ThreeDots color="white" />);
+          setTimeout(() => navigate("/"), 1000);
+        })
+        .catch((err) => {
+          setLoader(<ThreeDots color="white" />);
+          setDisable(true);
+          setTimeout(() => setDisable(false), 500);
+          setTimeout(() => setLoader("Cadastrar"), 500);
+
+          if (err.response.status) {
+            setInvalidEmail(true);
+          }
+        });
     }
   };
 
@@ -30,24 +59,30 @@ export default function Register() {
 
         <Form onSubmit={signUp}>
           <input
+            disabled={disable}
             type="text"
             placeholder="Nome"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
+
+          {invalidEmail && (
+            <p className="invalidForm">
+              ⛔ Use um e-mail diferente para continuar!
+            </p>
+          )}
+
           <input
+            disabled={disable}
             type="email"
             placeholder="E-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          {incorrectPassword === false ? (
-            <></>
-          ) : (
-            <p className="incorrectPassword">Senhas não coincidem!</p>
-          )}
+
           <input
+            disabled={disable}
             type="password"
             placeholder="Senha"
             value={password}
@@ -55,20 +90,20 @@ export default function Register() {
               setPassword(e.target.value);
             }}
           />
-          {incorrectPassword === false ? (
-            <></>
-          ) : (
-            <p className="incorrectPassword">Senhas não coincidem!</p>
+
+          {incorrectPassword && (
+            <p className="invalidForm">⛔ Senhas não coincidem!</p>
           )}
 
           <input
+            disabled={disable}
             type="password"
             placeholder="Confirme a senha"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
-          <button type="submit">Cadastrar</button>
+          <button type="submit">{loader}</button>
         </Form>
 
         <p className="goToLogin" onClick={() => navigate("/")}>
@@ -93,11 +128,12 @@ const CadastreScreen = styled.div`
     margin-bottom: 3rem;
   }
 
-  .incorrectPassword {
+  .invalidForm {
     cursor: default;
     display: flex;
 
     font-size: 1.5rem;
+    margin-bottom: 0.5rem;
     font-weight: 700;
     color: #e8b9f2;
   }
@@ -150,5 +186,9 @@ const Form = styled.form`
     border-radius: 0.4rem;
     border: none;
     background-color: #a328d6;
+
+    svg {
+      height: 1rem;
+    }
   }
 `;

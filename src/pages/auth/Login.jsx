@@ -71,7 +71,9 @@ export default function Login() {
           <button type="submit">{loader}</button>
         </Form>
 
-        <p onClick={() => navigate("/cadastro")}>Primeira vez? Cadastre-se!</p>
+        <p className="goToCadastre" onClick={() => navigate("/cadastro")}>
+          Primeira vez? Cadastre-se!
+        </p>
       </LoginScreen>
     </Container>
   );
@@ -93,17 +95,6 @@ const LoginScreen = styled.div`
     margin-bottom: 2.4rem;
   }
 
-  p {
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    margin-top: 2.3rem;
-
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #ffffff;
-  }
-
   .invalidForm {
     cursor: default;
     display: flex;
@@ -113,6 +104,17 @@ const LoginScreen = styled.div`
     margin-bottom: 0.5rem;
     font-weight: 700;
     color: #e8b9f2;
+  }
+
+  .goToCadastre {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    margin-top: 2.3rem;
+
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
   }
 `;
 

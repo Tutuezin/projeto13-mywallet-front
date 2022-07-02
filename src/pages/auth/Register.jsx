@@ -3,13 +3,15 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/imgs/MyWalletLogo.svg";
 import { useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
+import UserContext from "../../contexts/UserContext";
+import { useContext } from "react";
 
 import axios from "axios";
 
 export default function Register() {
   const navigate = useNavigate();
+  const { name, setName } = useContext(UserContext);
 
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

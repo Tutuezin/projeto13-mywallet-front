@@ -38,7 +38,13 @@ export default function Home() {
     <Container>
       <Header>
         <h2>Olá, {capitalizedName} </h2>
-        <img width={23} height={24} src={logout} alt="" />
+        <img
+          onClick={() => navigate("/")}
+          width={23}
+          height={24}
+          src={logout}
+          alt=""
+        />
       </Header>
 
       <Registrations qntMovements={movements}>
@@ -133,6 +139,8 @@ const Registrations = styled.div`
 
 const Transactions = styled.div`
   width: 100%;
+  overflow-y: scroll;
+  max-height: 39rem;
 `;
 
 const Transaction = styled.div`

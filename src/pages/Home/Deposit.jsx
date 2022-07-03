@@ -4,8 +4,11 @@ import { useState, useContext } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import UserContext from "../../contexts/UserContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Deposit() {
+  const navigate = useNavigate();
+
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [disable, setDisable] = useState(false);
@@ -30,8 +33,17 @@ export default function Deposit() {
     promise
       .then((res) => {
         console.log(res.data);
+        setLoader(<ThreeDots color="white" />);
+        setDisable(true);
+        setTimeout(() => navigate("/home"), 1000);
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => {
+        console.log(err.message);
+        setLoader(<ThreeDots color="white" />);
+        setDisable(true);
+        setTimeout(() => setDisable(false), 500);
+        setTimeout(() => setLoader("Salvar entrada"), 500);
+      });
   };
 
   return (

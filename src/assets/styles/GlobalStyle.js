@@ -142,7 +142,6 @@ html {
 
 body {
   background-color: #8C11BE;
- 
 }
 
 `;

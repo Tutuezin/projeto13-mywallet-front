@@ -32,7 +32,6 @@ export default function Deposit() {
     const promise = axios.post("http://localhost:5000/deposit", body, config);
     promise
       .then((res) => {
-        console.log(res.data);
         setLoader(<ThreeDots color="white" />);
         setDisable(true);
         setTimeout(() => navigate("/home"), 1000);

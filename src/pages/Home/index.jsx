@@ -11,7 +11,7 @@ import axios from "axios";
 export default function Home() {
   const navigate = useNavigate();
   const { name } = useContext(UserContext);
-  // const capitalizedName = name[0].toUpperCase() + name.slice(1);
+  const capitalizedName = name[0].toUpperCase() + name.slice(1);
 
   const [movements, setMovements] = useState([]);
   const [balance, setBalance] = useState(0);
@@ -27,8 +27,9 @@ export default function Home() {
     const promise = axios.get("http://localhost:5000/home", config);
     promise
       .then((res) => {
-        setMovements(res.data);
-        console.log(movements);
+        console.log(res.data);
+        setMovements(res.data.transactions);
+        setBalance(res.data.user.balance);
       })
       .catch((err) => console.log(err.message));
   }, []);
@@ -36,7 +37,7 @@ export default function Home() {
   return (
     <Container>
       <Header>
-        <h2>Olá, {name} </h2>
+        <h2>Olá, {capitalizedName} </h2>
         <img width={23} height={24} src={logout} alt="" />
       </Header>
 
@@ -49,30 +50,23 @@ export default function Home() {
           <>
             <Transactions>
               {movements.map((item, index) => {
-                // const amount = item.amount;
-                // let dinheiroFinal = null;
-
-                // dinheiroFinal += amount;
-
                 return (
-                  <>
-                    <Transaction>
-                      <h3 key={index}>
-                        <span className="date">{item.date}</span>{" "}
-                        {item.description}
-                      </h3>
-                      <Type transactionType={item.type}>
-                        {Number(item.amount).toFixed(2)}
-                      </Type>
-                    </Transaction>
-                  </>
+                  <Transaction key={index}>
+                    <h3>
+                      <span className="date">{item.date}</span>{" "}
+                      {item.description}
+                    </h3>
+                    <Type transactionType={item.type}>
+                      {Number(item.amount).toFixed(2)}
+                    </Type>
+                  </Transaction>
                 );
               })}
             </Transactions>
 
             <Balance balance={balance}>
               <h2>SALDO</h2>
-              <p>{balance.toFixed(2)}</p>
+              <p>{Number(balance).toFixed(2)}</p>
             </Balance>
           </>
         )}

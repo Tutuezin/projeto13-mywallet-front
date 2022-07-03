@@ -2,23 +2,41 @@ import logout from "../../assets/imgs/logout.svg";
 import deposit from "../../assets/imgs/deposit.svg";
 import withdraw from "../../assets/imgs/withdraw.svg";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container } from "../../components/Global";
-import { useContext } from "react";
 import UserContext from "../../contexts/UserContext";
+import axios from "axios";
 
 export default function Home() {
   const navigate = useNavigate();
-
-  const [movements, setMovements] = useState([1]);
-
+  const { name } = useContext(UserContext);
   // const capitalizedName = name[0].toUpperCase() + name.slice(1);
+
+  const [movements, setMovements] = useState([]);
+  const [balance, setBalance] = useState(0);
+
+  const { token } = useContext(UserContext);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  useEffect(() => {
+    const promise = axios.get("http://localhost:5000/home", config);
+    promise
+      .then((res) => {
+        setMovements(res.data);
+        console.log(movements);
+      })
+      .catch((err) => console.log(err.message));
+  }, []);
 
   return (
     <Container>
       <Header>
-        <h2>Olá, Fulano </h2>
+        <h2>Olá, {name} </h2>
         <img width={23} height={24} src={logout} alt="" />
       </Header>
 
@@ -30,24 +48,31 @@ export default function Home() {
         ) : (
           <>
             <Transactions>
-              <Transaction>
-                <h3>
-                  <span className="date">30/11</span> comprar um churras
-                </h3>
-                <LoseMoney>3920.90</LoseMoney>
-              </Transaction>
+              {movements.map((item, index) => {
+                // const amount = item.amount;
+                // let dinheiroFinal = null;
 
-              <Transaction>
-                <h3>
-                  <span className="date">30/11</span> Salario
-                </h3>
-                <MakeMoney>5000.00</MakeMoney>
-              </Transaction>
+                // dinheiroFinal += amount;
+
+                return (
+                  <>
+                    <Transaction>
+                      <h3 key={index}>
+                        <span className="date">{item.date}</span>{" "}
+                        {item.description}
+                      </h3>
+                      <Type transactionType={item.type}>
+                        {Number(item.amount).toFixed(2)}
+                      </Type>
+                    </Transaction>
+                  </>
+                );
+              })}
             </Transactions>
 
-            <Balance>
+            <Balance balance={balance}>
               <h2>SALDO</h2>
-              <p>3213.22</p>
+              <p>{balance.toFixed(2)}</p>
             </Balance>
           </>
         )}
@@ -71,6 +96,7 @@ export default function Home() {
   );
 }
 
+//STYLES
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
@@ -150,7 +176,8 @@ const Balance = styled.div`
   p {
     font-weight: 400;
     font-size: 1.7rem;
-    color: #03ac00;
+    color: ${({ balance }) =>
+      balance < 0 ? "#c70000" : balance === 0 ? "#868686" : "#03ac00"};
   }
 `;
 
@@ -182,10 +209,7 @@ const Button = styled.button`
   }
 `;
 
-const LoseMoney = styled.span`
-  color: #c70000;
-`;
-
-const MakeMoney = styled.span`
-  color: #03ac00;
+const Type = styled.span`
+  color: ${({ transactionType }) =>
+    transactionType === "deposit" ? "#03ac00" : "#c70000"};
 `;

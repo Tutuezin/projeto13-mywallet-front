@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import { Container, Form, Input, Button } from "../../components/Global";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { ThreeDots } from "react-loader-spinner";
+import UserContext from "../../contexts/UserContext";
+import axios from "axios";
 
 export default function WithDraw() {
   const [amount, setAmount] = useState("");
@@ -9,16 +11,34 @@ export default function WithDraw() {
   const [disable, setDisable] = useState(false);
   const [loader, setLoader] = useState("Salvar saída");
 
-  const saveWithDraw = (e) => {
+  const { token } = useContext(UserContext);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const makeTransaction = (e) => {
     e.preventDefault();
-    console.log("oi");
+    const body = {
+      amount,
+      description,
+      type: "withdraw",
+    };
+
+    const promise = axios.post("http://localhost:5000/withdraw", body, config);
+    promise
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err.message));
   };
   return (
     <Container>
       <Header>
         <h2>Nova saída</h2>
       </Header>
-      <Form onSubmit={saveWithDraw}>
+      <Form onSubmit={makeTransaction}>
         <Input
           disabled={disable}
           type="number"

@@ -4,12 +4,13 @@ import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
 import { useState, useContext } from "react";
 import { ThreeDots } from "react-loader-spinner";
-import axios from "axios";
 import { Container, Form, Input, Button } from "../../components/Global";
+import axios from "axios";
 
 export default function Login() {
   const navigate = useNavigate();
   const { setToken } = useContext(UserContext);
+  const { setName } = useContext(UserContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,6 +29,8 @@ export default function Login() {
     promise
       .then((res) => {
         setToken(res.data.token);
+        setName(res.data.name);
+
         setDisable(true);
         setLoader(<ThreeDots color="white" />);
         setTimeout(() => navigate("/home"), 1000);

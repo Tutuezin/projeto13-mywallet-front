@@ -27,7 +27,6 @@ export default function Home() {
     const promise = axios.get("http://localhost:5000/home", config);
     promise
       .then((res) => {
-        console.log(res.data);
         setMovements(res.data.transactions);
         setBalance(res.data.user.balance);
       })

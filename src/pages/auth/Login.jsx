@@ -23,7 +23,10 @@ export default function Login() {
       email,
       password,
     };
-    const promise = axios.post("http://localhost:5000/sign-in", body);
+    const promise = axios.post(
+      " https://back-my-wallet-project.herokuapp.com/sign-in",
+      body
+    );
 
     promise
       .then((res) => {

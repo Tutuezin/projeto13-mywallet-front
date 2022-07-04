@@ -25,7 +25,10 @@ export default function Home() {
       },
     };
 
-    const promise = axios.get("http://localhost:5000/home", config);
+    const promise = axios.get(
+      " https://back-my-wallet-project.herokuapp.com/home",
+      config
+    );
     promise
       .then((res) => {
         setName(

@@ -33,7 +33,11 @@ export default function WithDraw() {
       type: "withdraw",
     };
 
-    const promise = axios.post("http://localhost:5000/withdraw", body, config);
+    const promise = axios.post(
+      " https://back-my-wallet-project.herokuapp.com/withdraw",
+      body,
+      config
+    );
     promise
       .then((res) => {
         setLoader(<ThreeDots color="white" />);

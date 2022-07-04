@@ -32,7 +32,11 @@ export default function Deposit() {
       type: "deposit",
     };
 
-    const promise = axios.post("http://localhost:5000/deposit", body, config);
+    const promise = axios.post(
+      " https://back-my-wallet-project.herokuapp.com/deposit",
+      body,
+      config
+    );
     promise
       .then((res) => {
         setLoader(<ThreeDots color="white" />);

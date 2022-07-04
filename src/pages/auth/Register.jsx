@@ -32,7 +32,10 @@ export default function Register() {
         password,
       };
 
-      const promise = axios.post("http://localhost:5000/sign-up", body);
+      const promise = axios.post(
+        " https://back-my-wallet-project.herokuapp.com/sign-up",
+        body
+      );
 
       promise
         .then((res) => {

@@ -10,7 +10,6 @@ import axios from "axios";
 export default function Login() {
   const navigate = useNavigate();
   const { setToken } = useContext(UserContext);
-  const { setName } = useContext(UserContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,7 +28,7 @@ export default function Login() {
     promise
       .then((res) => {
         setToken(res.data.token);
-        setName(res.data.name);
+        localStorage.setItem("token", res.data.token);
 
         setDisable(true);
         setLoader(<ThreeDots color="white" />);

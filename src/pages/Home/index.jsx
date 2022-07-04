@@ -10,23 +10,27 @@ import axios from "axios";
 
 export default function Home() {
   const navigate = useNavigate();
-  const { name } = useContext(UserContext);
-  const capitalizedName = name[0].toUpperCase() + name.slice(1);
+  const { token } = useContext(UserContext);
 
+  const [name, setName] = useState("");
   const [movements, setMovements] = useState([]);
   const [balance, setBalance] = useState(0);
 
-  const { token } = useContext(UserContext);
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+  const tokenLocal = localStorage.getItem("token");
 
   useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token || tokenLocal}`,
+      },
+    };
+
     const promise = axios.get("http://localhost:5000/home", config);
     promise
       .then((res) => {
+        setName(
+          res.data.user.name[0].toUpperCase() + res.data.user.name.slice(1)
+        );
         setMovements(res.data.transactions);
         setBalance(res.data.user.balance);
       })
@@ -36,7 +40,7 @@ export default function Home() {
   return (
     <Container>
       <Header>
-        <h2>Olá, {capitalizedName} </h2>
+        <h2>Olá, {name} </h2>
         <img
           onClick={() => navigate("/")}
           width={23}

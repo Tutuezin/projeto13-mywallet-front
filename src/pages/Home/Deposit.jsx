@@ -5,6 +5,7 @@ import { ThreeDots } from "react-loader-spinner";
 import UserContext from "../../contexts/UserContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Notify } from "notiflix/build/notiflix-notify-aio";
 
 export default function Deposit() {
   const navigate = useNavigate();
@@ -13,6 +14,8 @@ export default function Deposit() {
   const [description, setDescription] = useState("");
   const [disable, setDisable] = useState(false);
   const [loader, setLoader] = useState("Salvar entrada");
+  const [maxCharacters, setMaxCharacters] = useState(false);
+  const [maxPix, setMaxPix] = useState(false);
 
   const { token } = useContext(UserContext);
   const config = {
@@ -34,7 +37,10 @@ export default function Deposit() {
       .then((res) => {
         setLoader(<ThreeDots color="white" />);
         setDisable(true);
-        setTimeout(() => navigate("/home"), 1000);
+        setTimeout(() => {
+          navigate("/home");
+          Notify.success("Transação efetuada!");
+        }, 1000);
       })
       .catch((err) => {
         console.log(err.message);
@@ -42,6 +48,10 @@ export default function Deposit() {
         setDisable(true);
         setTimeout(() => setDisable(false), 500);
         setTimeout(() => setLoader("Salvar entrada"), 500);
+
+        if (err.message) {
+          Notify.failure("Preencha os campos corretamente!");
+        }
       });
   };
 
@@ -50,20 +60,42 @@ export default function Deposit() {
       <Header>
         <h2>Nova entrada</h2>
       </Header>
+
       <Form onSubmit={makeTransaction}>
+        {maxPix && <InvalidForm>⛔ O Pix máximo é 10.000!</InvalidForm>}
         <Input
           disabled={disable}
-          type="number"
+          type="text"
           placeholder="Valor"
           value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          onChange={(e) => {
+            if (Number(e.target.value) || e.target.value === "") {
+              setAmount(e.target.value);
+            }
+            if (e.target.value > 10000) {
+              setMaxPix(true);
+            } else {
+              setMaxPix(false);
+            }
+          }}
         />
+
+        {maxCharacters && (
+          <InvalidForm>⛔ Máximo de caracteres atingido!</InvalidForm>
+        )}
         <Input
           disabled={disable}
           type="text"
           placeholder="Descrição"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e) => {
+            if (e.target.value.length < 20) {
+              setDescription(e.target.value);
+              setMaxCharacters(false);
+            } else {
+              setMaxCharacters(true);
+            }
+          }}
         />
         <Button type="submit">{loader}</Button>
       </Form>
@@ -83,4 +115,15 @@ const Header = styled.header`
     font-weight: 700;
     color: #fff;
   }
+`;
+
+const InvalidForm = styled.p`
+  cursor: default;
+  display: flex;
+  justify-content: flex-start;
+
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  color: #e8b9f2;
 `;
